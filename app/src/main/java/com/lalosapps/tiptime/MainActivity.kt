@@ -50,6 +50,11 @@ fun MyTipTimeApp() {
 
 @Composable
 fun TipTimeScreen() {
+    var amountInput by remember { mutableStateOf("") }
+
+    val amount = amountInput.toDoubleOrNull() ?: 0.0
+    val tip = calculateTip(amount)
+
     Column(
         modifier = Modifier.padding(32.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -60,10 +65,13 @@ fun TipTimeScreen() {
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
         Spacer(modifier = Modifier.height(16.dp))
-        EditNumberField()
+        EditNumberField(
+            value = amountInput,
+            onValueChange = { amountInput = it }
+        )
         Spacer(modifier = Modifier.height(24.dp))
         Text(
-            text = stringResource(id = R.string.tip_amount, ""),
+            text = stringResource(id = R.string.tip_amount, tip),
             modifier = Modifier.align(Alignment.CenterHorizontally),
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold
@@ -72,15 +80,13 @@ fun TipTimeScreen() {
 }
 
 @Composable
-fun EditNumberField() {
-    var amountInput by remember { mutableStateOf("") }
-
-    val amount = amountInput.toDoubleOrNull() ?: 0.0
-    val tip = calculateTip(amount)
-
+fun EditNumberField(
+    value: String,
+    onValueChange: (String) -> Unit
+) {
     TextField(
-        value = amountInput,
-        onValueChange = { amountInput = it },
+        value = value,
+        onValueChange = onValueChange,
         label = { Text(text = stringResource(id = R.string.cost_of_service)) },
         modifier = Modifier.fillMaxWidth(),
         singleLine = true,
