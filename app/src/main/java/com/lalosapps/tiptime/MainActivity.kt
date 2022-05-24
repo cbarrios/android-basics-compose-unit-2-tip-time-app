@@ -58,8 +58,9 @@ fun TipTimeScreen() {
 
 @Composable
 fun EditNumberField() {
+    val amountInput = "0"
     TextField(
-        value = "",
+        value = amountInput,
         onValueChange = {},
     )
 }
